@@ -1,0 +1,76 @@
+{% extends "layout.html" %} {% block container %}
+<div class="container mt-5">
+  <h1 class="mb-4">Nuevo Proveedor</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %} {% endif %} {% endwith %}
+
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      {{ form.nombre.label(class="form-label") }} {{
+      form.nombre(class="form-control") }} {% if form.nombre.errors %}
+      <div class="text-danger">
+        {% for error in form.nombre.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.empresa.label(class="form-label") }} {{
+      form.empresa(class="form-control") }} {% if form.empresa.errors %}
+      <div class="text-danger">
+        {% for error in form.empresa.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.telefono.label(class="form-label") }} {{
+      form.telefono(class="form-control") }} {% if form.telefono.errors %}
+      <div class="text-danger">
+        {% for error in form.telefono.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.email.label(class="form-label") }} {{
+      form.email(class="form-control") }} {% if form.email.errors %}
+      <div class="text-danger">
+        {% for error in form.email.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      {{ form.direccion.label(class="form-label") }} {{
+      form.direccion(class="form-control") }} {% if form.direccion.errors %}
+      <div class="text-danger">
+        {% for error in form.direccion.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Proveedor</button>
+    <a
+      href="{{ url_for('proveedor.lista_proveedores') }}"
+      class="btn btn-secondary"
+      >Cancelar</a
+    >
+  </form>
+</div>
+{% endblock %}
