@@ -11,7 +11,6 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    # 'empleado' or 'proveedor'
     role = db.Column(db.String(20), nullable=False)
 
     def set_password(self, password):

@@ -8,14 +8,11 @@ from datetime import datetime
 import calendar
 from sqlalchemy import extract
 from forms import LoginForm
-
-# Authentication and Provider Blueprints
 from flask import Blueprint
 from flask_login import login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
-# Authentication Blueprint
 auth_bp = Blueprint('auth', __name__)
 
 
@@ -71,7 +68,6 @@ def login():
             login_user(user)
             next_page = request.args.get('next')
 
-            # Add this block to redirect providers to their specific page
             if user.role == 'proveedor':
                 return redirect(url_for('proveedor.lista_proveedores'))
 
@@ -90,7 +86,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-# Proveedor Blueprint
 proveedor_bp = Blueprint('proveedor', __name__)
 
 
@@ -171,8 +166,6 @@ def eliminar_proveedor(id):
 
     return redirect(url_for('proveedor.lista_proveedores'))
 
-
-# Pizza Sales Constants
 PRECIOS = {
     'pequena': 40,
     'mediana': 80,
@@ -181,12 +174,10 @@ PRECIOS = {
 
 COSTO_INGREDIENTE = 10
 
-# Main Application
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 csrf = CSRFProtect()
 
-# Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
@@ -198,12 +189,8 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# Register blueprints
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(proveedor_bp)
-
-# Utility Functions for Cart Management
-
 
 def agregarPizza(tamano, cantidad, ingredientes):
     ingredientes_lista = ",".join(ingredientes)
@@ -245,21 +232,14 @@ def eliminarPizzaEspecifica(indice):
 def vaciarCarrito():
     open("pedidos.txt", "w").close()
 
-# Error Handlers
-
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
 
 @app.errorhandler(401)
 def unauthorized(error):
     flash('Por favor inicia sesión para acceder a esta página', 'warning')
     return redirect(url_for('auth.login'))
-
-# Routes
-
 
 @app.route("/", methods=['GET', 'POST'])
 @login_required
@@ -270,7 +250,6 @@ def index():
     pizza_form = PizzaForm()
     cliente_form = ClienteForm()
 
-    # Obtener la fecha de la URL o usar la fecha actual como predeterminada
     fecha_seleccionada = request.args.get('fecha')
     if fecha_seleccionada:
         try:
@@ -281,8 +260,7 @@ def index():
             return redirect(url_for('index'))
     else:
         fecha_filtrada = datetime.today().date()
-
-    # Filtrar las ventas por la fecha seleccionada
+        
     ventas = Venta.query.filter(db.func.date(
         Venta.fecha) == fecha_filtrada).all()
 

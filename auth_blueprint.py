@@ -17,7 +17,6 @@ def role_required(role):
 
             if current_user.role != role:
                 flash('No tienes permiso para acceder a esta página', 'danger')
-                # Redirige a una página segura
                 return redirect(url_for('index'))
 
             return f(*args, **kwargs)
